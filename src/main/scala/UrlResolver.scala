@@ -40,5 +40,5 @@ object UrlResolver extends App {
   }
 
 
-  println(Await.result(resolve(URI.create("https://www.bbc.co.uk/news/uk-wales-66956342")), scala.concurrent.duration.Duration(1, SECONDS)))
+  println(Await.result(resolve(URI.create("http://localhost:8000/redirect-ping")), scala.concurrent.duration.Duration(1, SECONDS)))
 }
