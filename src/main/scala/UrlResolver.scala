@@ -27,18 +27,28 @@ object UrlResolver extends App {
     client.sendAsync(request, BodyHandlers.discarding()).asScala
   }
 
-  def resolve(uri: URI): Future[URI] = {
-    (for {
-      response <- getHeadResponse(client, uri)
-    } yield {
-      for {
-      location <- response.headers().firstValue("Location").toScala
-      locationUri = uri.resolve(location)
-    } yield
-        resolve(locationUri)
-    }.getOrElse(Future(uri))).flatten
+  def resolve(uri: URI, count: Int = 10): Future[Either[String, URI]] = {
+    println(s"resolve $uri, with count $count")
+    if (count == 0) {
+      Future.successful(Left("too many redirects"))
+    } else {
+      (for {
+        response <- getHeadResponse(client, uri)
+      } yield {
+        response.headers().firstValue("Location").toScala.fold(Future.successful[Either[String, URI]](Right(uri))) { location =>
+          resolve(uri.resolve(location), count - 1)
+        }
+//        for {
+//          location <- response.headers().firstValue("Location").toScala
+//        } yield {
+//          println(s"yield $location")
+//          resolve(uri.resolve(location), count - 1)
+//        }
+      }).flatten
+//        .getOrElse(Future.successful(Right(uri)))).flatten
+    }
   }
 
 
-  println(Await.result(resolve(URI.create("http://localhost:8000/redirect-ping")), scala.concurrent.duration.Duration(1, SECONDS)))
+  println(Await.result(resolve(URI.create("http://localhost:8000/redirect-ping")), scala.concurrent.duration.Duration(10, SECONDS)))
 }
