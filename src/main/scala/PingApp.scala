@@ -14,6 +14,9 @@ class PingApi extends Http4sDsl[IO] {
     case (GET | HEAD) -> Root / "redirect" => MovedPermanently("Moved Permanently", Location(uri"/ping"))
     case (GET | HEAD) -> Root / "redirect-ping" => MovedPermanently("Moved Permanently", Location(uri"/redirect-pong"))
     case (GET | HEAD) -> Root / "redirect-pong" => MovedPermanently("Moved Permanently", Location(uri"/redirect-ping"))
+    case (GET | HEAD) -> Root / "redirect-a" => MovedPermanently("Moved Permanently", Location(uri"/redirect-c"))
+    case (GET | HEAD) -> Root / "redirect-b" => MovedPermanently("Moved Permanently", Location(uri"/redirect-c"))
+    case (GET | HEAD) -> Root / "redirect-c" => MovedPermanently("Moved Permanently", Location(uri"/ping"))
   }
 }
 

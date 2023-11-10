@@ -9,6 +9,8 @@ import scala.concurrent.{Await, Future}
 import scala.jdk.FutureConverters.CompletionStageOps
 import scala.jdk.OptionConverters.RichOptional
 import scala.concurrent.duration._
+import com.github.blemale.scaffeine.{ AsyncLoadingCache, Scaffeine }
+
 
 object UrlResolver extends App {
   val client = HttpClient.newBuilder()
@@ -16,7 +18,15 @@ object UrlResolver extends App {
     .followRedirects(Redirect.NEVER)
     .build()
 
-  private def getHeadResponse(client: HttpClient, uri: URI): Future[HttpResponse[Void]] = {
+  val cache: AsyncLoadingCache[URI, Option[URI]] =
+    Scaffeine()
+      .recordStats()
+      .expireAfterWrite(10.minutes)
+      .maximumSize(500)
+      .buildAsyncFuture((i: URI) => follow(i))
+
+  private def getHeadResponse(uri: URI): Future[HttpResponse[Void]] = {
+    println(s"Hitting URI: $uri")
     val request = HttpRequest.newBuilder()
       .uri(uri)
       .timeout(Duration.ofMinutes(2))
@@ -27,28 +37,26 @@ object UrlResolver extends App {
     client.sendAsync(request, BodyHandlers.discarding()).asScala
   }
 
+  def follow(uri: URI): Future[Option[URI]] = {
+    for {
+      response <- getHeadResponse(uri)
+    } yield {
+      response.headers().firstValue("Location").toScala.map(URI.create)
+    }
+  }
   def resolve(uri: URI, count: Int = 10): Future[Either[String, URI]] = {
     println(s"resolve $uri, with count $count")
     if (count == 0) {
       Future.successful(Left("too many redirects"))
     } else {
       (for {
-        response <- getHeadResponse(client, uri)
-      } yield {
-        response.headers().firstValue("Location").toScala.fold(Future.successful[Either[String, URI]](Right(uri))) { location =>
-          resolve(uri.resolve(location), count - 1)
-        }
-//        for {
-//          location <- response.headers().firstValue("Location").toScala
-//        } yield {
-//          println(s"yield $location")
-//          resolve(uri.resolve(location), count - 1)
-//        }
-      }).flatten
-//        .getOrElse(Future.successful(Right(uri)))).flatten
+        response <- cache.get(uri)
+      } yield response.fold(Future.successful[Either[String, URI]](Right(uri))) { location =>
+        resolve(uri.resolve(location), count - 1)
+        }).flatten
     }
   }
 
-
-  println(Await.result(resolve(URI.create("http://localhost:8000/redirect-ping")), scala.concurrent.duration.Duration(10, SECONDS)))
+  println(Await.result(resolve(URI.create("http://localhost:8000/redirect-a")), 10.seconds))
+  println(Await.result(resolve(URI.create("http://localhost:8000/redirect-b")), 10.seconds))
 }
