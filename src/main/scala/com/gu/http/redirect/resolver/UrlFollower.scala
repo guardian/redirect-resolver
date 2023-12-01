@@ -19,7 +19,6 @@ object UrlFollower {
       .build()
 
     private def getHeadResponse(uri: URI): Future[HttpResponse[Void]] = {
-      println(s"Hitting URI: $uri")
       val request = HttpRequest.newBuilder()
         .uri(uri)
         .timeout(Duration.ofMinutes(2))
@@ -30,12 +29,10 @@ object UrlFollower {
       client.sendAsync(request, BodyHandlers.discarding()).asScala
     }
 
-    override def followOnce(uri: URI): Future[Option[LocationHeader]] = {
+    override def followOnce(uri: URI): Future[Either[LocationHeader, Int]] = {
       for {
         response <- getHeadResponse(uri)
-      } yield {
-        response.headers().firstValue("Location").toScala.map(LocationHeader)
-      }
+      } yield response.headers().firstValue("Location").toScala.map(LocationHeader).toLeft(response.statusCode)
     }
   }
 }
@@ -50,5 +47,5 @@ trait UrlFollower {
    * This method should not follow redirects, it simply evaluates if a URL does redirect and if it does where it
    * redirects to.
    */
-  def followOnce(uri: URI): Future[Option[LocationHeader]]
+  def followOnce(uri: URI): Future[Either[LocationHeader, Int]]
 }
