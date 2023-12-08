@@ -13,6 +13,8 @@ libraryDependencies ++= List(
 
 lazy val root = (project in file("."))
   .settings(
-    name := "scala-school-redirects"
+    name := "scala-school-redirects",
+    Test / testOptions +=
+      Tests.Argument(TestFrameworks.ScalaTest, "-u", s"test-results/scala-${scalaVersion.value}", "-o")
   )
 
