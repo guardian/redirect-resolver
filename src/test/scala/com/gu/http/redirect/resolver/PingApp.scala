@@ -1,10 +1,12 @@
+package com.gu.http.redirect.resolver
+
 import cats.effect.{ExitCode, IO, IOApp}
-import org.http4s.{Header, HttpRoutes, Uri}
+import org.http4s.HttpRoutes
 import org.http4s.blaze.server.BlazeServerBuilder
 import org.http4s.dsl.Http4sDsl
 import org.http4s.headers.Location
-import org.http4s.server.Router
 import org.http4s.implicits._
+import org.http4s.server.Router
 
 import scala.concurrent.ExecutionContext
 
