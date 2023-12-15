@@ -1,4 +1,5 @@
-ThisBuild / version := "0.1.0-SNAPSHOT"
+import sbtrelease.ReleaseStateTransformations._
+import sbtversionpolicy.withsbtrelease.ReleaseVersion.fromAggregatedAssessedCompatibilityWithLatestRelease
 
 ThisBuild / scalaVersion := "2.13.12"
 
@@ -20,3 +21,15 @@ lazy val root = (project in file("."))
       Tests.Argument(TestFrameworks.ScalaTest, "-u", s"test-results/scala-${scalaVersion.value}", "-o")
   )
 
+licenses := Seq("Apache V2" -> url("https://www.apache.org/licenses/LICENSE-2.0.html"))
+releaseVersion := fromAggregatedAssessedCompatibilityWithLatestRelease().value
+releaseProcess := Seq[ReleaseStep](
+  checkSnapshotDependencies,
+  inquireVersions,
+  runClean,
+  setReleaseVersion,
+  commitReleaseVersion,
+  tagRelease,
+  setNextVersion,
+  commitNextVersion
+)
