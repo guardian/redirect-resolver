@@ -6,8 +6,7 @@ import java.net.http.HttpRequest.BodyPublishers
 import java.net.http.HttpResponse.BodyHandlers
 import java.net.http.{HttpClient, HttpRequest, HttpResponse}
 import java.time.Duration
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 import scala.jdk.FutureConverters._
 import scala.jdk.OptionConverters._
 
@@ -29,7 +28,7 @@ object UrlFollower {
       client.sendAsync(request, BodyHandlers.discarding()).asScala
     }
 
-    override def followOnce(uri: URI): Future[Either[LocationHeader, Int]] = {
+    override def followOnce(uri: URI)(implicit ec: ExecutionContext): Future[Either[LocationHeader, Int]] = {
       for {
         response <- getHeadResponse(uri)
       } yield response.headers().firstValue("Location").toScala.map(LocationHeader).toLeft(response.statusCode)
@@ -47,5 +46,5 @@ trait UrlFollower {
    * This method should not follow redirects, it simply evaluates if a URL does redirect and if it does where it
    * redirects to.
    */
-  def followOnce(uri: URI): Future[Either[LocationHeader, Int]]
+  def followOnce(uri: URI)(implicit ec: ExecutionContext): Future[Either[LocationHeader, Int]]
 }
