@@ -3,7 +3,7 @@ import sbtversionpolicy.withsbtrelease.ReleaseVersion.fromAggregatedAssessedComp
 
 ThisBuild / scalaVersion := "2.13.12"
 
-val Http4sVersion = "0.23.15"
+val Http4sVersion = "0.23.24"
 
 libraryDependencies ++= List(
   "com.github.blemale" %% "scaffeine" % "5.2.1",
