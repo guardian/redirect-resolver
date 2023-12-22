@@ -29,7 +29,7 @@ object PingApp extends IOApp {
   override def run(args: List[String]): IO[ExitCode] =
     stream(args).compile.drain.as(ExitCode.Success)
   private def stream(args: List[String]): fs2.Stream[IO, ExitCode] =
-    BlazeServerBuilder[IO](ExecutionContext.global)
+    BlazeServerBuilder[IO]
       .bindHttp(8000, "0.0.0.0")
       .withHttpApp(httpApp)
       .serve
