@@ -9,6 +9,13 @@ import scala.concurrent.{Await, Future}
 
 case class UltimateResponse(statusCode: Int, uri: URI)
 
+sealed trait Resolution {
+  val redirectPath: RedirectPath
+
+  case class Resolved(redirectPath: RedirectPath, ok: Boolean)
+  case class Unresolved(redirectPath: RedirectPath)
+}
+
 class UrlResolver(urlFollower: UrlFollower) {
 
   val cache: AsyncLoadingCache[URI, Either[LocationHeader, Int]] =
