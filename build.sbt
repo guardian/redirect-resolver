@@ -7,7 +7,7 @@ libraryDependencies ++= List(
   "com.github.blemale" %% "scaffeine" % "5.2.1",
   "org.scalatest" %% "scalatest" % "3.2.17" % Test,
   "org.http4s" %% "http4s-blaze-server" % "0.23.15" % Test,
-  "org.http4s" %% "http4s-dsl" % "0.23.18" % Test,
+  "org.http4s" %% "http4s-dsl" % "0.23.24" % Test,
   "ch.qos.logback" % "logback-classic" % "1.4.14" % Test
 )
 
