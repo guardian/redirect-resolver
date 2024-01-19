@@ -11,3 +11,7 @@ case class RedirectPath(locations: Seq[URI]) {
 
   def adding(location: URI): RedirectPath = copy(locations :+ location)
 }
+
+object RedirectPath {
+  def apply(uri: URI): RedirectPath = RedirectPath(Seq(uri))
+}

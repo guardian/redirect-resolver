@@ -39,7 +39,9 @@ object UrlFollower {
 /**
  * Raw value of the location header, which may be a path or a full URL.
  */
-case class LocationHeader(value: String)
+case class LocationHeader(value: String) {
+  def asAbsoluteUriRelativeTo(baseUri: URI): URI = baseUri.resolve(value)
+}
 
 trait UrlFollower {
   /**
