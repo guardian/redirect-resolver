@@ -4,6 +4,7 @@ import java.net.URI
 
 case class RedirectPath(locations: Seq[URI]) {
   val originalUri: URI = locations.head
+  val latestUri: URI = locations.last
   val numRedirects: Int = locations.size - 1
   val doesRedirect: Boolean = numRedirects > 0
 

@@ -1,7 +1,7 @@
 package com.gu.http.redirect.resolver
 
 import com.gu.http.redirect.resolver.Resolution.Resolved
-import com.gu.http.redirect.resolver.UrlFollower.javaNetHttpFollower
+import com.gu.http.redirect.resolver.UrlResponseFetcher.javaNetHttpFollower
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.flatspec.AnyFlatSpec
