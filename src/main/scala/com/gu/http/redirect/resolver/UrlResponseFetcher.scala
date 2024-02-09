@@ -62,7 +62,7 @@ object UrlResponseFetcher {
 
     override def fetchResponseFor(uri: URI)(implicit ec: ExecutionContext): Future[HttpResponseSummary] = for {
       response <- getHeadResponse(uri)
-    } yield HttpResponseSummary(response.statusCode, response.headers().firstValue("Location").toScala.map(LocationHeader))
+    } yield HttpResponseSummary(response.statusCode, response.headers().firstValue("Location").toScala.map(LocationHeader.apply))
   }
 }
 
