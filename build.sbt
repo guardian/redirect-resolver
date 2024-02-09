@@ -3,6 +3,8 @@ import sbtversionpolicy.withsbtrelease.ReleaseVersion.fromAggregatedAssessedComp
 
 ThisBuild / scalaVersion := "2.13.12"
 
+resolvers ++= Resolver.sonatypeOssRepos("public")
+
 libraryDependencies ++= List(
   "com.github.blemale" %% "scaffeine" % "5.2.1",
   "org.scalatest" %% "scalatest" % "3.2.17" % Test,
