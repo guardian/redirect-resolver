@@ -21,7 +21,7 @@ lazy val root = (project in file("."))
   )
 
 licenses := Seq("Apache V2" -> url("https://www.apache.org/licenses/LICENSE-2.0.html"))
-releaseVersion := fromAggregatedAssessedCompatibilityWithLatestRelease().value
+//releaseVersion := fromAggregatedAssessedCompatibilityWithLatestRelease().value
 releaseCrossBuild := true
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
