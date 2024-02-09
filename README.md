@@ -6,5 +6,5 @@ _given a url, where does that url ultimately redirect to?_
 
 * Set a maximum number of redirects to follow
 * Redirect-loop detection
-* Caching at the individual redirect level - doesn't need to follow the same redirect twice, even if the original redirect path started in a different place
+* Caching at the individual redirect level - won't follow the same redirect twice, even if the original redirect path started in a different place
 
