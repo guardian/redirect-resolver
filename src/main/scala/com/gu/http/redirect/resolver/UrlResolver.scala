@@ -1,29 +1,41 @@
 package com.gu.http.redirect.resolver
 
 import com.github.blemale.scaffeine.{AsyncLoadingCache, Scaffeine}
+import com.gu.http.redirect.resolver.Resolution.{Resolved, Unresolved}
 
 import java.net.URI
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import scala.concurrent.duration._
-import scala.concurrent.{Await, Future}
 
-case class UltimateResponse(statusCode: Int, uri: URI)
+sealed trait Resolution {
+  val redirectPath: RedirectPath
+}
 
-class UrlResolver(urlFollower: UrlFollower) {
+object Resolution {
+  case class Resolved(redirectPath: RedirectPath, statusCode: Int) extends Resolution
 
-  val cache: AsyncLoadingCache[URI, Either[LocationHeader, Int]] =
+  case class Unresolved(redirectPath: RedirectPath) extends Resolution
+}
+
+class UrlResolver(fetcher: UrlResponseFetcher, maxRedirects: Int = 10) {
+
+  val cache: AsyncLoadingCache[URI, Either[URI, Int]] =
     Scaffeine()
       .recordStats()
       .expireAfterWrite(10.minutes)
       .maximumSize(500)
-      .buildAsyncFuture((i: URI) => urlFollower.followOnce(i))
+      .buildAsyncFuture(followOnce)
 
-  def resolve(uri: URI, count: Int = 10): Future[Either[String, UltimateResponse]] = {
-    if (count == 0) {
-      Future.successful(Left("too many redirects"))
-    } else for {
-      response <- cache.get(uri)
-      result <- response.fold(locationHeader => resolve(uri.resolve(locationHeader.value), count - 1), statusCode => Future.successful(Right(UltimateResponse(statusCode, uri))))
-    } yield result
-  }
+  private def followOnce(uri: URI): Future[Either[URI, Int]] =
+    fetcher.fetchResponseFor(uri).map(summary => summary.absoluteRedirectRelativeTo(uri).toLeft(summary.statusCode))
+
+  def resolve(uri: URI): Future[Resolution] = resolveFollowing(RedirectPath(uri))
+
+  private def resolveFollowing(redirectPath: RedirectPath): Future[Resolution] =
+    if (redirectPath.numRedirects >= maxRedirects || redirectPath.isLoop) Future.successful(Unresolved(redirectPath))
+    else cache.get(redirectPath.latestUri).flatMap { _.fold(
+      subsequentUri => resolveFollowing(redirectPath.adding(subsequentUri)),
+      finalStatusCode => Future.successful(Resolved(redirectPath, finalStatusCode))
+    )}
 }
