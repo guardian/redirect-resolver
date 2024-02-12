@@ -7,7 +7,7 @@ resolvers ++= Resolver.sonatypeOssRepos("public")
 
 libraryDependencies ++= List(
   "com.github.blemale" %% "scaffeine" % "5.2.1",
-  "org.scalatest" %% "scalatest" % "3.2.17" % Test,
+  "org.scalatest" %% "scalatest" % "3.2.18" % Test,
   "org.http4s" %% "http4s-blaze-server" % "0.23.16" % Test,
   "org.http4s" %% "http4s-dsl" % "0.23.25" % Test,
   "ch.qos.logback" % "logback-classic" % "1.4.14" % Test
