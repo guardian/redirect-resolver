@@ -17,7 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup JDK
-        uses: actions/setup-java@v4
+        uses: rtyley/setup-java@patch-1
         with:
           distribution: corretto
           java-version: 17 # Currently Java 17 required by `s3mock-testcontainers`
