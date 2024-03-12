@@ -22,7 +22,7 @@ lazy val root = (project in file("."))
       Tests.Argument(TestFrameworks.ScalaTest, "-u", s"test-results/scala-${scalaVersion.value}", "-o")
   )
 
-licenses := Seq("Apache V2" -> url("https://www.apache.org/licenses/LICENSE-2.0.html"))
+licenses := Seq(License.Apache2)
 releaseVersion := fromAggregatedAssessedCompatibilityWithLatestRelease().value
 releaseCrossBuild := true
 releaseProcess := Seq[ReleaseStep](
