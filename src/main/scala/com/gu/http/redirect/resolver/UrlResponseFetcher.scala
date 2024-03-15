@@ -4,7 +4,7 @@ import com.gu.http.redirect.resolver.UrlResponseFetcher.HttpResponseSummary
 import com.gu.http.redirect.resolver.UrlResponseFetcher.HttpResponseSummary.{HTTPRedirectStatusCodes, LocationHeader}
 
 import java.net.URI
-import java.net.http.HttpClient.{Redirect, Version}
+import java.net.http.HttpClient.Version
 import java.net.http.HttpRequest.BodyPublishers
 import java.net.http.HttpResponse.BodyHandlers
 import java.net.http.{HttpClient, HttpRequest, HttpResponse}
@@ -12,6 +12,7 @@ import java.time.Duration
 import scala.concurrent.{ExecutionContext, Future}
 import scala.jdk.FutureConverters._
 import scala.jdk.OptionConverters._
+import scala.util.Success
 
 /**
  * If you want to use an alternative HTTP client (lke OkHttp), you can implement this trait and pass it to
@@ -30,6 +31,9 @@ object UrlResponseFetcher {
     def absoluteRedirectRelativeTo(requestUri: URI): Option[URI] = for {
       locationHeader <- maybeLocationHeader if HTTPRedirectStatusCodes.contains(statusCode)
     } yield locationHeader.asAbsoluteUriRelativeTo(requestUri)
+
+    def asFollowResultGiven(requestUri: URI): FollowResult =
+      absoluteRedirectRelativeTo(requestUri).fold[FollowResult](Conclusion(Success(statusCode)))(Redirect(_))
   }
 
   object HttpResponseSummary {
@@ -43,10 +47,10 @@ object UrlResponseFetcher {
     }
   }
 
-  val javaNetHttpFollower = new UrlResponseFetcher {
+  val JavaNetHttpResponseFetcher = new UrlResponseFetcher {
     val client = HttpClient.newBuilder()
       .version(Version.HTTP_1_1)
-      .followRedirects(Redirect.NEVER)
+      .followRedirects(java.net.http.HttpClient.Redirect.NEVER)
       .build()
 
     private def getHeadResponse(uri: URI): Future[HttpResponse[Void]] = {
