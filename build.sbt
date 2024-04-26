@@ -9,15 +9,15 @@ libraryDependencies ++= List(
   "com.github.blemale" %% "scaffeine" % "5.2.1",
   "org.scalatest" %% "scalatest" % "3.2.18" % Test,
   "org.http4s" %% "http4s-blaze-server" % "0.23.16" % Test,
-  "org.http4s" %% "http4s-dsl" % "0.23.25" % Test,
-  "ch.qos.logback" % "logback-classic" % "1.5.1" % Test
+  "org.http4s" %% "http4s-dsl" % "0.23.26" % Test,
+  "ch.qos.logback" % "logback-classic" % "1.5.6" % Test
 )
 
 lazy val root = (project in file("."))
   .settings(
     name := "redirect-resolver",
     organization := "com.gu",
-    crossScalaVersions := Seq("3.3.1", scalaVersion.value),
+    crossScalaVersions := Seq("3.3.3", scalaVersion.value),
     Test / testOptions +=
       Tests.Argument(TestFrameworks.ScalaTest, "-u", s"test-results/scala-${scalaVersion.value}", "-o")
   )
