@@ -1,7 +1,7 @@
 import sbtrelease.ReleaseStateTransformations._
 import sbtversionpolicy.withsbtrelease.ReleaseVersion.fromAggregatedAssessedCompatibilityWithLatestRelease
 
-ThisBuild / scalaVersion := "2.13.12"
+ThisBuild / scalaVersion := "2.13.13"
 
 resolvers ++= Resolver.sonatypeOssRepos("public")
 
@@ -10,7 +10,7 @@ libraryDependencies ++= List(
   "org.scalatest" %% "scalatest" % "3.2.18" % Test,
   "org.http4s" %% "http4s-blaze-server" % "0.23.16" % Test,
   "org.http4s" %% "http4s-dsl" % "0.23.25" % Test,
-  "ch.qos.logback" % "logback-classic" % "1.5.0" % Test
+  "ch.qos.logback" % "logback-classic" % "1.5.1" % Test
 )
 
 lazy val root = (project in file("."))
