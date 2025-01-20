@@ -10,7 +10,7 @@ libraryDependencies ++= List(
   "org.scalatest" %% "scalatest" % "3.2.18" % Test,
   "org.http4s" %% "http4s-blaze-server" % "0.23.16" % Test,
   "org.http4s" %% "http4s-dsl" % "0.23.26" % Test,
-  "ch.qos.logback" % "logback-classic" % "1.5.6" % Test
+  "ch.qos.logback" % "logback-classic" % "1.5.16" % Test
 )
 
 lazy val root = (project in file("."))
