@@ -1,7 +1,7 @@
 import sbtrelease.ReleaseStateTransformations._
 import sbtversionpolicy.withsbtrelease.ReleaseVersion.fromAggregatedAssessedCompatibilityWithLatestRelease
 
-ThisBuild / scalaVersion := "2.13.13"
+ThisBuild / scalaVersion := "2.13.16"
 
 resolvers ++= Resolver.sonatypeOssRepos("public")
 
