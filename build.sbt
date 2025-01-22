@@ -1,23 +1,23 @@
 import sbtrelease.ReleaseStateTransformations._
 import sbtversionpolicy.withsbtrelease.ReleaseVersion.fromAggregatedAssessedCompatibilityWithLatestRelease
 
-ThisBuild / scalaVersion := "2.13.13"
+ThisBuild / scalaVersion := "2.13.16"
 
 resolvers ++= Resolver.sonatypeOssRepos("public")
 
 libraryDependencies ++= List(
-  "com.github.blemale" %% "scaffeine" % "5.2.1",
-  "org.scalatest" %% "scalatest" % "3.2.18" % Test,
-  "org.http4s" %% "http4s-blaze-server" % "0.23.16" % Test,
-  "org.http4s" %% "http4s-dsl" % "0.23.26" % Test,
-  "ch.qos.logback" % "logback-classic" % "1.5.6" % Test
+  "com.github.blemale" %% "scaffeine" % "5.3.0",
+  "org.scalatest" %% "scalatest" % "3.2.19" % Test,
+  "org.http4s" %% "http4s-blaze-server" % "0.23.17" % Test,
+  "org.http4s" %% "http4s-dsl" % "0.23.30" % Test,
+  "ch.qos.logback" % "logback-classic" % "1.5.16" % Test
 )
 
 lazy val root = (project in file("."))
   .settings(
     name := "redirect-resolver",
     organization := "com.gu",
-    crossScalaVersions := Seq("3.3.3", scalaVersion.value),
+    crossScalaVersions := Seq("3.3.4", scalaVersion.value),
     Test / testOptions +=
       Tests.Argument(TestFrameworks.ScalaTest, "-u", s"test-results/scala-${scalaVersion.value}", "-o")
   )
