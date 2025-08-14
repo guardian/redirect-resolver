@@ -1,11 +1,9 @@
 import sbtrelease.ReleaseStateTransformations._
-import sbtversionpolicy.withsbtrelease.ReleaseVersion.fromAggregatedAssessedCompatibilityWithLatestRelease
+import sbtversionpolicy.withsbtrelease.ReleaseVersion
 
 ThisBuild / scalaVersion := "2.13.16"
 
-resolvers ++= Resolver.sonatypeOssRepos("public")
-
-libraryDependencies ++= List(
+libraryDependencies ++= Seq(
   "com.github.blemale" %% "scaffeine" % "5.3.0",
   "org.scalatest" %% "scalatest" % "3.2.19" % Test,
   "org.http4s" %% "http4s-blaze-server" % "0.23.17" % Test,
@@ -22,8 +20,8 @@ lazy val root = (project in file("."))
       Tests.Argument(TestFrameworks.ScalaTest, "-u", s"test-results/scala-${scalaVersion.value}", "-o")
   )
 
-licenses := Seq("Apache V2" -> url("https://www.apache.org/licenses/LICENSE-2.0.html"))
-releaseVersion := fromAggregatedAssessedCompatibilityWithLatestRelease().value
+licenses := Seq(License.Apache2)
+releaseVersion := ReleaseVersion.fromAssessedCompatibilityWithLatestRelease().value
 releaseCrossBuild := true
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
