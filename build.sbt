@@ -8,14 +8,14 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.2.19" % Test,
   "org.http4s" %% "http4s-blaze-server" % "0.23.17" % Test,
   "org.http4s" %% "http4s-dsl" % "0.23.32" % Test,
-  "ch.qos.logback" % "logback-classic" % "1.5.19" % Test
+  "ch.qos.logback" % "logback-classic" % "1.5.20" % Test
 )
 
 lazy val root = (project in file("."))
   .settings(
     name := "redirect-resolver",
     organization := "com.gu",
-    crossScalaVersions := Seq("3.3.6", scalaVersion.value),
+    crossScalaVersions := Seq("3.3.7", scalaVersion.value),
     Test / testOptions +=
       Tests.Argument(TestFrameworks.ScalaTest, "-u", s"test-results/scala-${scalaVersion.value}", "-o")
   )
