@@ -15,7 +15,7 @@ lazy val root = (project in file("."))
   .settings(
     name := "redirect-resolver",
     organization := "com.gu",
-    crossScalaVersions := Seq("3.3.6", scalaVersion.value),
+    crossScalaVersions := Seq("3.3.7", scalaVersion.value),
     Test / testOptions +=
       Tests.Argument(TestFrameworks.ScalaTest, "-u", s"test-results/scala-${scalaVersion.value}", "-o")
   )
