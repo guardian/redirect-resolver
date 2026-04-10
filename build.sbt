@@ -5,7 +5,7 @@ ThisBuild / scalaVersion := "2.13.18"
 
 libraryDependencies ++= Seq(
   "com.github.blemale" %% "scaffeine" % "5.3.0",
-  "org.scalatest" %% "scalatest" % "3.2.19" % Test,
+  "org.scalatest" %% "scalatest" % "3.2.20" % Test,
   "org.http4s" %% "http4s-blaze-server" % "0.23.17" % Test,
   "org.http4s" %% "http4s-dsl" % "0.23.33" % Test,
   "ch.qos.logback" % "logback-classic" % "1.5.32" % Test
