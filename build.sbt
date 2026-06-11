@@ -8,7 +8,7 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.2.20" % Test,
   "org.http4s" %% "http4s-blaze-server" % "0.23.17" % Test,
   "org.http4s" %% "http4s-dsl" % "0.23.34" % Test,
-  "ch.qos.logback" % "logback-classic" % "1.5.33" % Test
+  "ch.qos.logback" % "logback-classic" % "1.5.34" % Test
 )
 
 lazy val root = (project in file("."))
