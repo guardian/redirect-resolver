@@ -1,7 +1,7 @@
 import sbtrelease.ReleaseStateTransformations._
 import sbtversionpolicy.withsbtrelease.ReleaseVersion
 
-ThisBuild / scalaVersion := "2.13.18"
+ThisBuild / scalaVersion := "3.9.0"
 
 libraryDependencies ++= Seq(
   "com.github.blemale" %% "scaffeine" % "5.3.0",
